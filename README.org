@@ -1,0 +1,4 @@
+* agda-smash
+
+- Based on Haskell library [[https://hackage.haskell.org/package/smash/][smash]]
+- Explicit induction inspired [[https://www.cs.bham.ac.uk/~mhe/HoTT-UF-in-Agda-Lecture-Notes/HoTT-UF-Agda.html][Introduction to Univalent Foundations of Mathematics with Agda]] by Martín Hötzel Escardó
