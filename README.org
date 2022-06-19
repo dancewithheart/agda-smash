@@ -2,20 +2,13 @@
 
 Translation of Haskell library [[https://hackage.haskell.org/package/smash/][smash]] into Agda.
 
-[[https://ncatlab.org/nlab/show/smash+product][Smash product]] of `pointed objects` in category of Agda types and functions.
-
-Pointed set A is represented as `Maybe A`.
-
-Smash
-
+[[https://ncatlab.org/nlab/show/smash+product][Smash product]] is canonical tensor product of pointed sets in a category, vien by taking product of underlying objects and indentifying with new basepoint - basepoints from ingredients.
 #+BEGIN_EXAMPLE
-nada ----+ smash A B
+nada ----+---- smash A B
 #+END_EXAMPLE
 
 [[https://ncatlab.org/nlab/show/wedge+sum][Wedge sum]] of two pointed sets A and B
 is the quotient set of the disjoint union A + B where both copies of the basepoint are identified.
-
-Wedge sum:
 
 #+BEGIN_EXAMPLE
          here A
