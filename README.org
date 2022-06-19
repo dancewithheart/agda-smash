@@ -20,7 +20,7 @@ nowhere ----+
           there B
 #+END_EXAMPLE
 
-Can
+Can combines smash product with wedge sum:
 
 #+BEGIN_EXAMPLE
       one A
