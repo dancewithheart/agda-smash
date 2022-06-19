@@ -35,3 +35,14 @@ swap non = non
 swap (one a) = eno a
 swap (eno b) = one b
 swap (two a b) = two b a
+
+Can-Induction : {A : Set lA} {B : Set lB} (P : Can A B -> Set lP)
+  -> P non
+  -> ((a : A) -> P (one a))
+  -> ((b : B) -> P (eno b))
+  -> ((a : A) -> (b : B) -> P (two a b))
+  -> (s : Can A B) -> P s
+Can-Induction P pn po pe pt non = pn
+Can-Induction P pn po pe pt (one a) = po a
+Can-Induction P pn po pe pt (eno b) = pe b
+Can-Induction P pn po pe pt (two a b) = pt a b
