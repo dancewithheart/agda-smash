@@ -1,4 +1,33 @@
-* agda-smash
+* Agda Smash
 
-- Based on Haskell library [[https://hackage.haskell.org/package/smash/][smash]]
-- Explicit induction inspired [[https://www.cs.bham.ac.uk/~mhe/HoTT-UF-in-Agda-Lecture-Notes/HoTT-UF-Agda.html][Introduction to Univalent Foundations of Mathematics with Agda]] by Martín Hötzel Escardó
+Translation of Haskell library [[https://hackage.haskell.org/package/smash/][smash]] into Agda.
+
+[[https://ncatlab.org/nlab/show/smash+product][Smash product]] is canonical tensor product of pointed sets in a category, vien by taking product of underlying objects and indentifying with new basepoint - basepoints from ingredients.
+#+BEGIN_EXAMPLE
+nada ----+---- smash A B
+#+END_EXAMPLE
+
+[[https://ncatlab.org/nlab/show/wedge+sum][Wedge sum]] of two pointed sets A and B
+is the quotient set of the disjoint union A + B where both copies of the basepoint are identified.
+
+#+BEGIN_EXAMPLE
+         here A
+            |
+            |
+nowhere ----+
+            |
+            |
+          there B
+#+END_EXAMPLE
+
+Can combines smash product with wedge sum:
+
+#+BEGIN_EXAMPLE
+      one A
+        |
+        |
+Non ----+----- two A B
+        |
+        |
+      eno B
+#+END_EXAMPLE
