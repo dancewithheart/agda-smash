@@ -2,7 +2,7 @@
 
 Translation of Haskell library [[https://hackage.haskell.org/package/smash/][smash]] into Agda.
 
-[[smash product][https://ncatlab.org/nlab/show/smash+product]] of `pointed objects` in category of Agda types and functions.
+[[https://ncatlab.org/nlab/show/smash+product][Smash product]] of `pointed objects` in category of Agda types and functions.
 
 Pointed set A is represented as `Maybe A`.
 
