@@ -1,12 +1,30 @@
-* agda-smash
+* Agda Smash
 
-- Based on Haskell library [[https://hackage.haskell.org/package/smash/][smash]]
-- Explicit induction inspired [[https://www.cs.bham.ac.uk/~mhe/HoTT-UF-in-Agda-Lecture-Notes/HoTT-UF-Agda.html][Introduction to Univalent Foundations of Mathematics with Agda]] by Martín Hötzel Escardó
+Translation of Haskell library [[https://hackage.haskell.org/package/smash/][smash]] into Agda.
+
+[[smash product][https://ncatlab.org/nlab/show/smash+product]] of `pointed objects` in category of Agda types and functions.
+
+Pointed set A is represented as `Maybe A`.
 
 Smash
 
 #+BEGIN_EXAMPLE
 nada ----+ smash A B
+#+END_EXAMPLE
+
+[[https://ncatlab.org/nlab/show/wedge+sum][Wedge sum]] of two pointed sets A and B
+is the quotient set of the disjoint union A + B where both copies of the basepoint are identified.
+
+Wedge sum:
+
+#+BEGIN_EXAMPLE
+         here A
+            |
+            |
+nowhere ----+
+            |
+            |
+          there B
 #+END_EXAMPLE
 
 Can
@@ -19,16 +37,4 @@ Non ----+----- two A B
         |
         |
       eno B
-#+END_EXAMPLE
-
-Wedge
-
-#+BEGIN_EXAMPLE
-         here A
-            |
-            |
-nowhere ----+
-            |
-            |
-          there B
 #+END_EXAMPLE
