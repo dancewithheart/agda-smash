@@ -3,6 +3,7 @@
 module Data.Smash where
 
 open import Level
+open import Data.Product using (_×_; _,_)
 
 private
   variable
@@ -13,3 +14,6 @@ private
 data Smash {lA lB} (A : Set lA) (B : Set lB) : Set (lA ⊔ lB) where
   nada  :           Smash A B
   smash : A -> B -> Smash A B
+
+fromProduct : A × B -> Smash A B
+fromProduct (a , b) = smash a b
