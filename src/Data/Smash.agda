@@ -81,11 +81,14 @@ bind : Smash A B -> (f : (A × B) -> Smash A' B') -> Smash A' B'
 bind nada f = nada
 bind (smash a b) f = f (a , b)
 
+bipure : A -> B -> Smash A B
+bipure a b = smash a b
+
 -- ap
 
-ap : Smash (A -> A') (B -> B') -> Smash A B -> Smash A' B'
-ap nada = \ x -> nada
-ap (smash f g) = bimap f g
+biap : Smash (A -> A') (B -> B') -> Smash A B -> Smash A' B'
+biap nada = \ x -> nada
+biap (smash f g) = bimap f g
 
 -- assocciativity
 
