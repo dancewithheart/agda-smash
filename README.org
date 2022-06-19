@@ -1,14 +1,42 @@
 * Agda Smash
 
-Translation of Haskell library [[https://hackage.haskell.org/package/smash/][smash]] into Agda.
+Formal specification of Haskell [[https://hackage.haskell.org/package/smash/][smash]] library in Agda.
+
+From programming point of view provided data types Smash, Wedge and Can can treated as different possiblities
+how to combine two types same as: [[https://github.com/agda/agda-stdlib/tree/master/src/Data/Product][Product]], [[https://github.com/agda/agda-stdlib/blob/master/src/Data/Sum/Base.agda][Sum]] and [[https://github.com/agda/agda-stdlib/blob/master/src/Data/These/Base.agda][These]]:
+
+Product, Sum and These show how to combine types in sets, where Smash, Wedge and Can do the same for pointed ses:
+
+#+BEGIN: columnview"
+| description         | sets    | algebra in setss | pointed sets  | algebra in pointed sets |
+|---------------------+---------|------------------|---------------|-------------------------|
+| both                | Product | A * B            | Smash product | 1 + (A * B)             |
+| on of them          | Sum     | A + B            | Wedge sum     | 1 + A + B               |
+| bot of one of them  | These   | A + B + (A * B)  | Can           | 1 + A + B + (A * B)     |
+#+END:
 
 [[https://ncatlab.org/nlab/show/smash+product][Smash product]] is canonical tensor product of pointed sets in a category, vien by taking product of underlying objects and indentifying with new basepoint - basepoints from ingredients.
+
+#+BEGIN_SRC agda
+data Smash {lA lB} (A : Set lA) (B : Set lB) : Set (lA ⊔ lB) where
+  nada  :           Smash A B
+  smash : A -> B -> Smash A B
+#+END_SRC
+
 #+BEGIN_EXAMPLE
 nada ----+---- smash A B
 #+END_EXAMPLE
 
+
 [[https://ncatlab.org/nlab/show/wedge+sum][Wedge sum]] of two pointed sets A and B
 is the quotient set of the disjoint union A + B where both copies of the basepoint are identified.
+
+#+BEGIN_SRC agda
+data Wedge {lA lB} (A : Set lA)(B : Set lB) : Set (lA ⊔ lB) where
+  nowhere : Wedge A B
+  here : (a : A) -> Wedge A B
+  there : (b : B) -> Wedge A B
+#+END_SRC
 
 #+BEGIN_EXAMPLE
          here A
@@ -21,6 +49,15 @@ nowhere ----+
 #+END_EXAMPLE
 
 Can combines smash product with wedge sum:
+
+
+#+BEGIN_SRC agda
+data Can (A : Set lA)(B : Set lB) : Set (lA ⊔ lB) where
+  non : Can A B
+  one : (a : A)            -> Can A B
+  eno : (b : B)            -> Can A B
+  two : (a : A) -> (b : B) -> Can A B
+#+END_SRC
 
 #+BEGIN_EXAMPLE
       one A
