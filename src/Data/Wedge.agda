@@ -3,7 +3,12 @@
 module Data.Wedge where
 
 open import Level
-open import Data.Product using (_×_; _,_)
+open import Data.Sum renaming
+ ( _⊎_ to _+_
+ ; swap to s-swap
+ ; inj₁ to left
+ ; inj₂ to right
+ )
 
 private
   variable
@@ -25,6 +30,10 @@ Wedge-induction : {A : Set lA} {B : Set lB} (P : Wedge A B -> Set lP)
 Wedge-induction P pn _ _ nowhere = pn
 Wedge-induction P _ ph _ (here a) = ph a
 Wedge-induction P _ _ pt (there b) = pt b
+
+fromSum : A + B -> Wedge A B
+fromSum (left a) = here a
+fromSum (right b) = there b
 
 swap : Wedge A B -> Wedge B A
 swap nowhere = nowhere
