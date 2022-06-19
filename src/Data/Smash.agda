@@ -17,3 +17,7 @@ data Smash {lA lB} (A : Set lA) (B : Set lB) : Set (lA ⊔ lB) where
 
 fromProduct : A × B -> Smash A B
 fromProduct (a , b) = smash a b
+
+swap : Smash A B -> Smash B A
+swap nada = nada
+swap (smash a b) = smash b a
