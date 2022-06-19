@@ -16,3 +16,8 @@ data Wedge {lA lB} (A : Set lA)(B : Set lB) : Set (lA ⊔ lB) where
   nowhere : Wedge A B
   here : (a : A) -> Wedge A B
   there : (b : B) -> Wedge A B
+
+swap : Wedge A B -> Wedge B A
+swap nowhere = nowhere
+swap (here a) = there a
+swap (there b) = here b
