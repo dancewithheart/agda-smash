@@ -4,6 +4,11 @@ module Data.Can where
 
 open import Level
 open import Data.Product using (_,_) renaming (_×_ to _*_)
+open import Data.Sum renaming
+ ( _⊎_ to _+_
+ ; inj₁ to left
+ ; inj₂ to right
+ )
 
 private
   variable
@@ -19,3 +24,7 @@ data Can (A : Set lA)(B : Set lB) : Set (lA ⊔ lB) where
 
 fromProduct : A * B -> Can A B
 fromProduct (a , b) = two a b
+
+fromSum : A + B -> Can A B
+fromSum (left a) = one a
+fromSum (right b) = eno b
