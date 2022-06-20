@@ -4,6 +4,7 @@ module Data.Can where
 
 open import Level
 open import Data.Product using (_,_) renaming (_×_ to _*_)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Sum renaming
  ( _⊎_ to _+_
  ; swap to s-swap
@@ -13,15 +14,24 @@ open import Data.Sum renaming
 
 private
   variable
-    lA lB lP : Level
-    A : Set lA
-    B : Set lB
+    lA lB lP lA' lB' lC : Level
+    A  : Set lA
+    B  : Set lB
+    A' : Set lA'
+    B' : Set lB'
+    C  : Set lC
 
 data Can (A : Set lA)(B : Set lB) : Set (lA ⊔ lB) where
   non : Can A B
-  one : (a : A)            -> Can A B
-  eno : (b : B)            -> Can A B
-  two : (a : A) -> (b : B) -> Can A B
+  one : A      -> Can A B
+  eno :      B -> Can A B
+  two : A -> B -> Can A B
+
+canFst : Can A B -> Maybe A
+canFst = {!   !}
+
+canSnd : Can A B -> Maybe B
+canSnd = {!   !}
 
 fromProduct : A * B -> Can A B
 fromProduct (a , b) = two a b
@@ -35,6 +45,37 @@ swap non = non
 swap (one a) = eno a
 swap (eno b) = one b
 swap (two a b) = two b a
+
+bimap : (A -> A') -> (B -> B') -> Can A B -> Can A' B'
+bimap f g non = non
+bimap f g (one a) = one (f a)
+bimap f g (eno b) = eno (g b)
+bimap f g (two a b) = two (f a) (g b)
+
+bipure : A -> B -> Can A B
+bipure = two
+
+biap : Can (A -> A') (B -> B') -> Can A B -> Can A' B'
+biap (one fa) (one a) = one (fa a)
+biap (one fa) (two a b) = one (fa a)
+biap (eno fb) (eno b) = eno (fb b)
+biap (eno fb) (two a b) = eno (fb b)
+biap (two fa fb) (two a b) = two (fa a) (fb b)
+biap (two fa fb) (one a) = one (fa a)
+biap (two fa fb) (eno b) = eno (fb b)
+biap _ _ = non
+
+fold : C -> (A -> C) -> (B -> C) -> (A -> B -> C) -> Can A B -> C
+fold c _ _ _ non = c
+fold c ac _ _ (one a) = ac a
+fold c _ bc _ (eno b) = bc b
+fold c _ _ abc (two a b) = abc a b
+
+foldWithMerge : C -> (A -> C) -> (B -> C) -> (C -> C -> C) -> Can A B -> C
+foldWithMerge c _ _ _ non = c
+foldWithMerge c ac _ _ (one a) = ac a
+foldWithMerge c _ bc _ (eno b) = bc b
+foldWithMerge _ ac bc m (two a b) = m (ac a) (bc b)
 
 Can-Induction : {A : Set lA} {B : Set lB} (P : Can A B -> Set lP)
   -> P non
