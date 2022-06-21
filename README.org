@@ -18,7 +18,7 @@ Product, Sum and These show how to combine types in sets, where Smash, Wedge and
 [[https://ncatlab.org/nlab/show/smash+product][Smash product]] is canonical tensor product of pointed sets in a category, vien by taking product of underlying objects and indentifying with new basepoint - basepoints from ingredients.
 
 #+BEGIN_SRC agda
-data Smash {lA lB} (A : Set lA) (B : Set lB) : Set (lA ⊔ lB) where
+data Smash (A : Set) (B : Set) : Set where
   nada  :           Smash A B
   smash : A -> B -> Smash A B
 #+END_SRC
@@ -32,10 +32,10 @@ nada ----+---- smash A B
 is the quotient set of the disjoint union A + B where both copies of the basepoint are identified.
 
 #+BEGIN_SRC agda
-data Wedge {lA lB} (A : Set lA)(B : Set lB) : Set (lA ⊔ lB) where
-  nowhere : Wedge A B
-  here : (a : A) -> Wedge A B
-  there : (b : B) -> Wedge A B
+data Wedge (A : Set)(B : Set) : Set where
+  nowhere :           Wedge A B
+  here    : A ->      Wedge A B
+  there   :      B -> Wedge A B
 #+END_SRC
 
 #+BEGIN_EXAMPLE
@@ -52,11 +52,11 @@ Can combines smash product with wedge sum:
 
 
 #+BEGIN_SRC agda
-data Can (A : Set lA)(B : Set lB) : Set (lA ⊔ lB) where
+data Can (A : Set)(B : Set) : Set where
   non : Can A B
-  one : (a : A)            -> Can A B
-  eno : (b : B)            -> Can A B
-  two : (a : A) -> (b : B) -> Can A B
+  one : A      -> Can A B
+  eno :      B -> Can A B
+  two : A -> B -> Can A B
 #+END_SRC
 
 #+BEGIN_EXAMPLE
