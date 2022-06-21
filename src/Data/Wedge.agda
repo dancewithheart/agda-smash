@@ -44,24 +44,9 @@ there a : Wedge A B
 
 -}
 data Wedge {lA lB} (A : Set lA)(B : Set lB) : Set (lA ⊔ lB) where
-  nowhere : Wedge A B
-  here : (a : A) -> Wedge A B
-  there : (b : B) -> Wedge A B
-
--- map
-
-bimap : (f : A -> A') (g : B -> B') -> Wedge A B -> Wedge A' B'
-bimap f g nowhere = nowhere
-bimap f g (here a) = here (f a)
-bimap f g (there b) = there (g b)
-
-map : (f : A -> A') -> Wedge A B -> Wedge A' B
-map f = bimap f id
-
-map-left : (g : B -> B') -> Wedge A B -> Wedge A B'
-map-left = bimap id
-
--- fold
+  nowhere :           Wedge A B
+  here    : A ->      Wedge A B
+  there   :      B -> Wedge A B
 
 {-
 Wedge elimination rule
@@ -73,30 +58,126 @@ w: Wedge A B
 c : C
 
 -}
-
-fold : C -> (A -> C) -> (B -> C) -> Wedge A B -> C
+fold : C
+    -> (A -> C)
+    -> (B -> C)
+    -> Wedge A B -> C
 fold c ac bc nowhere = c
 fold c ac bc (here a) = ac a
 fold c ac bc (there b) = bc b
 
-biap : Wedge (A -> A') (B -> B') -> Wedge A B -> Wedge A' B'
+-- Bifunctor ops
+
+bimap : (f : A -> A') (g : B -> B')
+     -> Wedge A B -> Wedge A' B'
+bimap f g nowhere = nowhere
+bimap f g (here a) = here (f a)
+bimap f g (there b) = there (g b)
+
+map-right : (f : A -> A')
+         -> Wedge A B -> Wedge A' B
+map-right f = bimap f id
+
+map-left : (g : B -> B')
+        -> Wedge A B -> Wedge A B'
+map-left = bimap id
+
+-- BiApplicative (no bipure)
+
+biap : Wedge (A -> A') (B -> B')
+    -> Wedge A B -> Wedge A' B'
 biap (here f) (here a) = here (f a)
 biap (there f) (there b) = there (f b)
 biap _ = \ x -> nowhere
 
+-- Wedge commutativity / symmetry
+
+swap : Wedge A B -> Wedge B A
+swap nowhere = nowhere
+swap (here a) = there a
+swap (there b) = here b
+
+-- Wedge associativity
+
+reassocLR : Wedge (Wedge A B) C -> Wedge A (Wedge B C)
+reassocLR (here (here a)) = here a
+reassocLR (here (there b)) = there (here b)
+reassocLR (there c) = there (there c)
+reassocLR _ = nowhere
+
+reassocRL : Wedge A (Wedge B C) -> Wedge (Wedge A B) C
+reassocRL nowhere = nowhere
+reassocRL (here a) = here (here a)
+reassocRL (there nowhere) = nowhere
+reassocRL (there (here b)) = here (there b)
+reassocRL (there (there c)) = there c
+
+--
+
+-- conversions
+
 fromSum : A + B -> Wedge A B
 fromSum (left a) = here a
 fromSum (right b) = there b
+
+quotWedge : (Maybe A) + (Maybe B) -> Wedge A B
+quotWedge (left (just a)) = here a
+quotWedge (left nothing) = nowhere
+quotWedge (right (just b)) = there b
+quotWedge (right nothing) = nowhere
+
+-- 1 + (A + B) <=> Wedge A B
+
+-- collapses both nothing into single nowhere
+toWedge : Maybe (A + B) -> Wedge A B
+toWedge (just (left a)) = here a
+toWedge (just (right b)) = there b
+toWedge nothing = nowhere
 
 fromWedge : Wedge A B -> Maybe (A + B)
 fromWedge nowhere = nothing
 fromWedge (here a) = just (left a)
 fromWedge (there b) = just (right b)
 
-swap : Wedge A B -> Wedge B A
-swap nowhere = nowhere
-swap (here a) = there a
-swap (there b) = here b
+-- projections
+
+-- TODO fromHere (quotWedge Nothing mb) = mb
+fromHere : Wedge A B -> Maybe A
+fromHere (here a) = just a
+fromHere _ = nothing
+
+-- TODO fromThere (quotWedge ma Nothing) = ma
+fromThere : Wedge A B -> Maybe B
+fromThere (there b) = just b
+fromThere _ = nothing
+
+-- injections
+
+wedgeLeft : Maybe A -> Wedge A B
+wedgeLeft (just a) = here a
+wedgeLeft nothing = nowhere
+
+wedgeRight : Maybe B -> Wedge A B
+wedgeRight (just b) = there b
+wedgeRight nothing = nowhere
+
+-- distributivity over product
+
+distributeWedge : Wedge (A × B) C -> (Wedge A C × Wedge B C)
+distributeWedge nowhere = (nowhere , nowhere)
+distributeWedge (here (a , b)) = (here a , here b)
+distributeWedge (there c) = (nowhere , there c)
+
+codistributeWedge : (Wedge A C × Wedge B C) -> Wedge (A × B) C
+codistributeWedge (nowhere , nowhere) = nowhere
+codistributeWedge (nowhere , here b) = nowhere
+codistributeWedge (nowhere , there c) = there c
+codistributeWedge (here a , nowhere) = nowhere
+codistributeWedge (here a , here b) = here (a , b)
+codistributeWedge (here a , there c) = there c
+codistributeWedge (there c , nowhere) = there c
+codistributeWedge (there c , here b) = there c
+codistributeWedge (there c1 , there c2) = there c1 -- can choose c2
 
 Wedge-induction : {A : Set lA} {B : Set lB} (P : Wedge A B -> Set lP)
  -> P nowhere
