@@ -20,16 +20,12 @@ private
 
 {-
 
-Smash introduction rules:
+-----------------
+nada : Smash A B
 
-A : Type   B Type
--------------------
-nada : Wedge A B
-
-
-A : Type   B Type   a : A   b : B
----------------------------------
-smash a b : Wedge A B
+a : A   b : B
+----------------------
+smash a b : Smash A B
 
 -}
 data Smash {lA lB} (A : Set lA) (B : Set lB) : Set (lA ⊔ lB) where
@@ -37,19 +33,37 @@ data Smash {lA lB} (A : Set lA) (B : Set lB) : Set (lA ⊔ lB) where
   smash : A -> B -> Smash A B
 
 {-
-Smash elimination rule
+Smash introduction rules
 
-A : Type   B Type  C : Type
-c: C   abc : A->B->C
-w: Smash A B
--------------------
-w : C
+nothing : Maybe A   nothing : Maybe B
+-------------------------------------
+nada : Smash A B
+
+
+just a: Maybe A   just b : Maybe B
+---------------------------------
+smash a b : Smash A B
+
+alternatively:
+
+just (a,b): Maybe A * B
+-----------------------
+smash a b : Smash A B
+
 -}
+smashProduct : Maybe A -> Maybe B -> Smash A B
+smashProduct (just a) (just b) = smash a b
+smashProduct _ _ = nada
+
+toSmash : Maybe (A × B) -> Smash A B
+toSmash (just (a , b)) = smash a b
+toSmash nothing = nada
+
 fold : C -> (A -> B -> C) -> Smash A B -> C
 fold c abc nada = c
 fold c abc (smash a b) = abc a b
 
--- swap / commutativity / symmetry
+-- commutativity / symmetry
 
 swap : Smash A B -> Smash B A
 swap nada = nada
@@ -82,15 +96,21 @@ undistributeSmash (there (smash b c)) = smash (there b) c
 
 -- distributivity over product
 
-pairSmash : Smash (A × B) C -> (Smash A C) × (Smash B C)
-pairSmash nada = (nada , nada)
-pairSmash (smash (a , b) c) = (smash a c , smash b c)
+pairSmash1 : Smash (A × B) C -> (Smash A C) × (Smash B C)
+pairSmash1 nada = (nada , nada)
+pairSmash1 (smash (a , b) c) = (smash a c , smash b c)
 
 unpairSmash : (Smash A C)  × (Smash B C) -> Smash (A × B) C
 unpairSmash (nada , nada) = nada
 unpairSmash (nada , smash b c) = nada
 unpairSmash (smash a c , nada) = nada
 unpairSmash (smash a c1 , smash b c2) = smash (a , b) c1 -- can choose c2
+
+pairSmash2 : Smash A (B × C) -> (Smash A B) × (Smash A C)
+pairSmash2 x = {!   !}
+
+unpairSmash2 : (Smash A B) × (Smash A C) -> Smash A (B × C)
+unpairSmash2 x = {!   !}
 
 -- map
 
@@ -121,26 +141,28 @@ biap (smash f g) = bimap f g
 
 -- conversions
 
+-- TODO fromSmash (toSmash mab) == mab
 fromSmash : Smash A B -> Maybe (A × B)
 fromSmash nada = nothing
 fromSmash (smash a b) = just (a , b)
 
 -- injection
 
--- TODO  fromSmash (fromProduct ab) == Just ab
+-- TODO proove fromSmash (fromProduct ab) == Just ab
 fromProduct : A × B -> Smash A B
-fromProduct (a , b) = smash a b
+fromProduct ab = toSmash (just ab)
 
--- TODO fromSmash (toSmash mab) == mab
-toSmash : Maybe (A × B) -> Smash A B
-toSmash (just (a , b)) = smash a b
-toSmash nothing = nada
+{-
+Smash elimination rules (projections)
 
-smashProduct : Maybe A -> Maybe B -> Smash A B
-smashProduct (just a) (just b) = smash a b
-smashProduct _ _ = nada
+x: Smash A B
+----------------------
+smashFst (x) : Maybe A
 
--- projections
+x: Smash A B
+----------------------
+smashSnd (x) : Maybe B
+-}
 
 -- TODO smashFst (smashSum (Just a) (Just b)) == Just a
 smashFst : Smash A B -> Maybe A
