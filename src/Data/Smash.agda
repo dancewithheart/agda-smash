@@ -107,10 +107,14 @@ unpairSmash (smash a c , nada) = nada
 unpairSmash (smash a c1 , smash b c2) = smash (a , b) c1 -- can choose c2
 
 pairSmash2 : Smash A (B × C) -> (Smash A B) × (Smash A C)
-pairSmash2 x = {!   !}
+pairSmash2 nada = nada , nada
+pairSmash2 (smash a (b , c)) = (smash a b) , (smash a c)
 
-unpairSmash2 : (Smash A B) × (Smash A C) -> Smash A (B × C)
-unpairSmash2 x = {!   !}
+unpairSmash2 : ((Smash A B) × (Smash A C)) -> Smash A (B × C)
+unpairSmash2 (nada , nada) = nada
+unpairSmash2 (nada , smash a c) = nada -- no a for smash
+unpairSmash2 (smash a b , nada) = nada -- no c for (b,c)
+unpairSmash2 (smash a1 b , smash a2 c) = smash a1 (b , c) -- could be a2
 
 -- map
 
