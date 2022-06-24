@@ -19,6 +19,8 @@ private
     C' : Set lC'
 
 {-
+Smash introduction rules
+that follows from constructors of ADT:
 
 -----------------
 nada : Smash A B
@@ -29,11 +31,12 @@ smash a b : Smash A B
 
 -}
 data Smash {lA lB} (A : Set lA) (B : Set lB) : Set (lA ⊔ lB) where
-  nada  :           Smash A B
-  smash : A -> B -> Smash A B
+  nada  :                       Smash A B
+  smash : (a : A) -> (b : B) -> Smash A B
 
 {-
 Smash introduction rules
+that follows from from smash product of pointed sets
 
 nothing : Maybe A   nothing : Maybe B
 -------------------------------------
@@ -44,7 +47,7 @@ just a: Maybe A   just b : Maybe B
 ---------------------------------
 smash a b : Smash A B
 
-alternatively:
+second rule we could express as:
 
 just (a,b): Maybe A * B
 -----------------------
@@ -143,21 +146,10 @@ biap : Smash (A -> A') (B -> B') -> Smash A B -> Smash A' B'
 biap nada = \ x -> nada
 biap (smash f g) = bimap f g
 
--- conversions
-
--- TODO fromSmash (toSmash mab) == mab
-fromSmash : Smash A B -> Maybe (A × B)
-fromSmash nada = nothing
-fromSmash (smash a b) = just (a , b)
-
--- injection
-
--- TODO proove fromSmash (fromProduct ab) == Just ab
-fromProduct : A × B -> Smash A B
-fromProduct ab = toSmash (just ab)
-
 {-
-Smash elimination rules (projections)
+Smash elimination rules
+that follows from product of pointed sets
+(projections)
 
 x: Smash A B
 ----------------------
@@ -166,17 +158,30 @@ smashFst (x) : Maybe A
 x: Smash A B
 ----------------------
 smashSnd (x) : Maybe B
+
+alternatively we could say:
+
+    x: Smash A B
+-------------------------
+fromSmash x : Maybe A × B
 -}
 
--- TODO smashFst (smashSum (Just a) (Just b)) == Just a
 smashFst : Smash A B -> Maybe A
 smashFst nada = nothing
 smashFst (smash a b) = just a
 
--- TODO smashSnd (smashSum (Just a) (Just b)) == Just b
 smashSnd : Smash A B -> Maybe B
 smashSnd nada = nothing
 smashSnd (smash a b) = just b
+
+fromSmash : Smash A B -> Maybe (A × B)
+fromSmash nada = nothing
+fromSmash (smash a b) = just (a , b)
+
+-- injection
+
+fromProduct : A × B -> Smash A B
+fromProduct ab = toSmash (just ab)
 
 -- diagonal
 
@@ -187,8 +192,8 @@ smashDiag nothing = nada
 smashDiag' : A -> Smash A A
 smashDiag' a = smash a a
 
--- TODO smashCurry (smashUncurry f) = f
--- TODO smashUncurry (smashCurry f) = f
+-- curry and uncurry
+
 smashCurry : (Smash A B -> Maybe C) -> Maybe A -> Maybe B -> Maybe C
 smashCurry f (just a) (just b) = f (smash a b)
 smashCurry f _ _ = f nada -- can we use nothing
@@ -203,3 +208,5 @@ Smash-Induction : {A : Set lA} {B : Set lB} (P : Smash A B -> Set lP)
   -> (s : Smash A B) -> P s
 Smash-Induction P pn ps nada = pn
 Smash-Induction P pn ps (smash a b) = ps a b
+
+-- TODO align https://github.com/agda/agda-stdlib/blob/master/src/Data/These/Base.agda#L66-L80
