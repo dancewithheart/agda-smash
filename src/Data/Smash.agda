@@ -146,6 +146,8 @@ biap : Smash (A -> A') (B -> B') -> Smash A B -> Smash A' B'
 biap nada = \ x -> nada
 biap (smash f g) = bimap f g
 
+-- TODO define right ap and left ap based on biap
+
 {-
 Smash elimination rules
 that follows from product of pointed sets
