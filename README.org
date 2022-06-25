@@ -68,3 +68,22 @@ Non ----+----- two A B
         |
       eno B
 #+END_EXAMPLE
+
+** Building
+Project can be build using [[https://www.gnu.org/software/make/][make]]:
+
+#+BEGIN_SRC shell
+make
+#+END_SRC
+
+or [[https://nixos.org/guides/nix-pills/][nix]]:
+
+#+BEGIN_SRC shell
+nix build
+#+END_SRC
+
+[[https://nixos.wiki/wiki/Flakes][Nix flakes]] fix dependencies on hashes computed for Linux. You need Linux with nix to update them:
+
+#+BEGIN_SRC shell
+nix flake update
+#+END_SRC
