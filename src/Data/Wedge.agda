@@ -100,10 +100,11 @@ swap (there b) = here b
 -- Wedge associativity
 
 reassocLR : Wedge (Wedge A B) C -> Wedge A (Wedge B C)
-reassocLR (here (here a)) = here a
-reassocLR (here (there b)) = there (here b)
 reassocLR (there c) = there (there c)
-reassocLR _ = nowhere
+reassocLR (here (there b)) = there (here b)
+reassocLR (here (here a)) = here a
+reassocLR (here nowhere) = nowhere
+reassocLR nowhere = nowhere
 
 reassocRL : Wedge A (Wedge B C) -> Wedge (Wedge A B) C
 reassocRL nowhere = nowhere
@@ -111,8 +112,6 @@ reassocRL (here a) = here (here a)
 reassocRL (there nowhere) = nowhere
 reassocRL (there (here b)) = here (there b)
 reassocRL (there (there c)) = there c
-
---
 
 -- conversions
 
@@ -125,8 +124,6 @@ quotWedge (left (just a)) = here a
 quotWedge (left nothing) = nowhere
 quotWedge (right (just b)) = there b
 quotWedge (right nothing) = nowhere
-
--- 1 + (A + B) <=> Wedge A B
 
 -- collapses both nothing into single nowhere
 toWedge : Maybe (A + B) -> Wedge A B
@@ -141,12 +138,10 @@ fromWedge (there b) = just (right b)
 
 -- projections
 
--- TODO fromHere (quotWedge Nothing mb) = mb
 fromHere : Wedge A B -> Maybe A
 fromHere (here a) = just a
 fromHere _ = nothing
 
--- TODO fromThere (quotWedge ma Nothing) = ma
 fromThere : Wedge A B -> Maybe B
 fromThere (there b) = just b
 fromThere _ = nothing
