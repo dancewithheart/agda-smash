@@ -22,6 +22,7 @@
               ln -s ${./Makefile} Makefile
               ln -s ${./agda-smash.agda-lib} agda-smash.agda-lib
               ln -s ${./src}/*.agda src
+              mkdir -p $out
               ${pkgs.gnumake}/bin/make OUT_DIR=$out
             '';
         };
