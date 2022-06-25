@@ -1,12 +1,12 @@
-name: GitHub Pages
+name: Build PR
 
 on:
-  push:
+  pull_request:
     branches: [main]
 
 jobs:
   build:
-    name: Deploy
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -15,5 +15,5 @@ jobs:
         with:
           name: agda-smash
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - name: Build
+      - name: Build HTML
         run: nix build --verbose --print-build-logs
