@@ -1,0 +1,19 @@
+name: Build PR
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v17
+      - uses: cachix/cachix-action@v10
+        with:
+          name: agda-smash
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: Build HTML
+        run: nix build --verbose --print-build-logs
