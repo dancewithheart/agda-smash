@@ -82,7 +82,7 @@ or [[https://nixos.org/guides/nix-pills/][nix]]:
 nix build
 #+END_SRC
 
-[[https://nixos.wiki/wiki/Flakes][Nix flakes]] fix dependencies on hashes computed for Linux. You need Linux with nix to update them:
+Update [[https://nixos.wiki/wiki/Flakes][nix flakes]]:
 
 #+BEGIN_SRC shell
 nix flake update
