@@ -1,3 +1,7 @@
+#+CAPTION: CI Build Status
+#+NAME:   fig:CI-Bade
+[[https://github.com/lemastero/agda-smash/actions/workflows/main.yml/badge.svg?branch=main]]
+
 * Agda Smash
 
 Formal specification of Haskell [[https://hackage.haskell.org/package/smash/][smash]] library in Agda.
