@@ -1,4 +1,6 @@
-[![Build CI](https://github.com/lemastero/agda-smash/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/lemastero/agda-smash/actions/workflows/main.yml?query=branch%3Amain)
+#+CAPTION: CI Build Status
+#+NAME:   fig:CI-Bade
+[[https://github.com/lemastero/agda-smash/actions/workflows/main.yml/badge.svg?branch=main]]
 
 * Agda Smash
 
