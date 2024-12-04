@@ -12,7 +12,7 @@ how to combine two types same as: [[https://github.com/agda/agda-stdlib/tree/mas
 Product, Sum and These show how to combine types in sets, where Smash, Wedge and Can do the same for pointed ses:
 
 #+BEGIN: columnview"
-| description         | sets    | algebra in setss | pointed sets  | algebra in pointed sets |
+| description         | sets    | algebra in sets  | pointed sets  | algebra in pointed sets |
 |---------------------+---------|------------------|---------------|-------------------------|
 | both                | Product | A * B            | Smash product | 1 + (A * B)             |
 | on of them          | Sum     | A + B            | Wedge sum     | 1 + A + B               |
