@@ -16,20 +16,16 @@ Product, Sum and These show how to combine types in sets, where Smash, Wedge and
 |---------------------+---------|------------------|---------------|-------------------------|
 | both                | Product | A * B            | Smash product | 1 + (A * B)             |
 | on of them          | Sum     | A + B            | Wedge sum     | 1 + A + B               |
-| bot of one of them  | These   | A + B + (A * B)  | Can           | 1 + A + B + (A * B)     |
+| both or one of them | These   | A + B + (A * B)  | Can           | 1 + A + B + (A * B)     |
 #+END:
 
-[[https://ncatlab.org/nlab/show/smash+product][Smash product]] is canonical tensor product of pointed sets in a category, vien by taking product of underlying objects and indentifying with new basepoint - basepoints from ingredients.
+[[https://ncatlab.org/nlab/show/smash+product][Smash product]] is canonical tensor product of pointed sets in a category, given by taking product of underlying objects and indentifying with new basepoint - basepoints from ingredients.
 
 #+BEGIN_SRC agda
 data Smash (A : Set) (B : Set) : Set where
   nada  :           Smash A B
   smash : A -> B -> Smash A B
 #+END_SRC
-
-#+BEGIN_EXAMPLE
-nada ----+---- smash A B
-#+END_EXAMPLE
 
 
 [[https://ncatlab.org/nlab/show/wedge+sum][Wedge sum]] of two pointed sets A and B
@@ -42,16 +38,6 @@ data Wedge (A : Set)(B : Set) : Set where
   there   :      B -> Wedge A B
 #+END_SRC
 
-#+BEGIN_EXAMPLE
-         here A
-            |
-            |
-nowhere ----+
-            |
-            |
-          there B
-#+END_EXAMPLE
-
 Can combines smash product with wedge sum:
 
 
@@ -62,16 +48,6 @@ data Can (A : Set)(B : Set) : Set where
   eno :      B -> Can A B
   two : A -> B -> Can A B
 #+END_SRC
-
-#+BEGIN_EXAMPLE
-      one A
-        |
-        |
-Non ----+----- two A B
-        |
-        |
-      eno B
-#+END_EXAMPLE
 
 ** Building
 Project can be build using [[https://www.gnu.org/software/make/][make]]:
