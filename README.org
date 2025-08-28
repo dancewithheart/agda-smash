@@ -1,6 +1,6 @@
 #+CAPTION: CI Build Status
 #+NAME:   fig:CI-Bade
-[[https://github.com/lemastero/agda-smash/actions/workflows/main.yml/badge.svg?branch=main]]
+[[https://github.com/dancewithheart/agda-smash/actions/workflows/main.yml/badge.svg?branch=main]]
 
 * Agda Smash
 
