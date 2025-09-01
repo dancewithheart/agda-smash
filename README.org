@@ -67,3 +67,15 @@ Update [[https://nixos.wiki/wiki/Flakes][nix flakes]]:
 #+BEGIN_SRC shell
 nix flake update
 #+END_SRC
+
+Start nix shell with Agda:
+
+#+BEGIN_SRC shell
+nix develop
+which agda
+#+END_SRC
+
+will give sth like
+#+BEGIN_SRC text
+/nix/store/somehash-agdaWithPackages-2.8.0/bin/agda
+#+END_SRC
